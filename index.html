@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Facturas</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body style="height:100vh;min-height:100vh;">
     <div id="message-box" class="message-box"></div>
 
@@ -14,36 +16,42 @@
         <div id="success-animation" class="success-animation-container"></div>
     </div>
 
-    <div class="main-wrapper" style="display:flex;flex-direction:column;height:100vh;min-height:100vh;justify-content:flex-start;align-items:stretch;">
-        <h1 style="text-align:center;margin:2px 0 8px 0;background-color:rgba(183, 28, 28, 0.6);color:white;padding:6px 12px;text-shadow:1px 1px 3px rgba(0,0,0,0.8);">
-            IMPORTANTE: este es un registro temporal para cuando no haya sistema, todas estas facturas deben subirse despues al sistema principal.
+    <div class="main-wrapper"
+        style="display:flex;flex-direction:column;height:100vh;min-height:100vh;justify-content:flex-start;align-items:stretch;">
+        <h1
+            style="text-align:center;margin:2px 0 8px 0;background-color:rgba(183, 28, 28, 0.6);color:white;padding:6px 12px;text-shadow:1px 1px 3px rgba(0,0,0,0.8);">
+            IMPORTANTE: este es un registro temporal para cuando no haya sistema, todas estas facturas deben subirse
+            despues al sistema principal.
         </h1>
         <div class="container" style="flex:1 1 auto;min-height:0;">
             <!-- Action Buttons -->
             <div class="action-buttons-container">
                 <button id="new-invoice-button" class="action-btn action-btn-new">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                        <polyline points="14 2 14 8 20 8"/>
-                        <line x1="12" y1="18" x2="12" y2="12"/>
-                        <line x1="9" y1="15" x2="15" y2="15"/>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                        <polyline points="14 2 14 8 20 8" />
+                        <line x1="12" y1="18" x2="12" y2="12" />
+                        <line x1="9" y1="15" x2="15" y2="15" />
                     </svg>
                     <span>Nueva Factura</span>
                 </button>
                 <button id="save-invoice-button" class="action-btn action-btn-save">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
-                        <polyline points="17 21 17 13 7 13 7 21"/>
-                        <polyline points="7 3 7 8 15 8"/>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+                        <polyline points="17 21 17 13 7 13 7 21" />
+                        <polyline points="7 3 7 8 15 8" />
                     </svg>
                     <span>Guardar Factura</span>
                 </button>
                 <a href="invoices.html" class="action-btn action-btn-search" style="text-decoration: none;">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="11" cy="11" r="8"/>
-                        <path d="m21 21-4.35-4.35"/>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8" />
+                        <path d="m21 21-4.35-4.35" />
                     </svg>
-                    <span>Buscar</span>
+                    <span>Buscar Facturas</span>
                 </a>
             </div>
 
@@ -72,8 +80,8 @@
                 </div>
 
                 <div class="payment-info">
-                     <h2>Forma de pago [ Ctrl + f ]</h2>
-                     <div class="form-group">
+                    <h2>Forma de pago [ Ctrl + f ]</h2>
+                    <div class="form-group">
                         <label for="payment-method">Metodo:</label>
                         <select id="payment-method">
                             <option value="" disabled selected>-- Seleccionar --</option>
@@ -85,7 +93,7 @@
                         </select>
                     </div>
                 </div>
-            </section> 
+            </section>
 
             <section class="invoice-details">
                 <h2>Productos a facturar</h2>
@@ -119,13 +127,24 @@
         </div> <!-- end of .container -->
         <section class="product-entry bottom-card" style="flex:0 0 auto;min-height:0;">
             <div class="scan-action-row">
-                <input type="text" id="product-code" class="scan-input-field big-input compact-input" placeholder="Escanea o escribe aqui [ Ctrl + e ]">
+                <input type="text" id="product-code" class="scan-input-field big-input compact-input"
+                    placeholder="Escanea o escribe aqui [ Ctrl + e ]">
                 <div class="scan-btn-group">
                     <button id="add-product-button" class="button scan-action-btn plus-btn compact-btn" title="Agregar">
-                        <svg width="24" height="24" fill="none" stroke="#3498db" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="#3498db" stroke-width="2.2"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+                        <svg width="24" height="24" fill="none" stroke="#3498db" stroke-width="2.5"
+                            stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="10" stroke="#3498db" stroke-width="2.2" />
+                            <line x1="12" y1="8" x2="12" y2="16" />
+                            <line x1="8" y1="12" x2="16" y2="12" />
+                        </svg>
                     </button>
-                    <button id="search-product-button" type="button" class="button scan-action-btn search-btn compact-btn" title="Buscar por nombre">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7a8ca3" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    <button id="search-product-button" type="button"
+                        class="button scan-action-btn search-btn compact-btn" title="Buscar por nombre">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7a8ca3" stroke-width="2.2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8" />
+                            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                        </svg>
                     </button>
                 </div>
             </div>
@@ -141,8 +160,9 @@
         <div class="modal-content">
             <span class="close-button help-modal-close">&times;</span>
             <h2>AVISO IMPORTANTE</h2>
-            <p>Este es un registro temporal para cuando no haya sistema, todas las facturas deben subirse despues al sistema principal.</p>
-            
+            <p>Este es un registro temporal para cuando no haya sistema, todas las facturas deben subirse despues al
+                sistema principal.</p>
+
             <h3>Atajos de teclado</h3>
             <div class="shortcuts-container">
                 <div class="shortcut-item">
@@ -179,7 +199,11 @@
             <h2>Busca productos por su nombre</h2>
             <div class="form-group">
                 <label for="product-search-input" class="search-icon-label">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3498db" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3498db" stroke-width="2.2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8" />
+                        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                    </svg>
                 </label>
                 <input type="text" id="product-search-input" placeholder="Escribe parte del nombre...">
             </div>
@@ -226,12 +250,15 @@
                     <label for="bank-select">Banco:</label>
                     <select id="bank-select">
                         <option value="" disabled selected>-- Seleccionar banco --</option>
-                        <option value="AMERICAN EXPRESS, VISA Y MASTERCARD BANCO GUAYAQUIL">AMERICAN EXPRESS, VISA Y MASTERCARD BANCO GUAYAQUIL</option>
-                        <option value="DINERS, VISA, CREDI FACIL BANCO PICHINCHA">DINERS, VISA, CREDI FACIL BANCO PICHINCHA</option>
+                        <option value="AMERICAN EXPRESS, VISA Y MASTERCARD BANCO GUAYAQUIL">AMERICAN EXPRESS, VISA Y
+                            MASTERCARD BANCO GUAYAQUIL</option>
+                        <option value="DINERS, VISA, CREDI FACIL BANCO PICHINCHA">DINERS, VISA, CREDI FACIL BANCO
+                            PICHINCHA</option>
                         <option value="VISA Y MASTERCARD BANCO DEL AUSTRO">VISA Y MASTERCARD BANCO DEL AUSTRO</option>
                         <option value="VISA Y MASTERCARD PACIFICARD">VISA Y MASTERCARD PACIFICARD</option>
                         <option value="CUOTA FACIL UNIBANCO">CUOTA FACIL UNIBANCO</option>
-                        <option value="BANCO INTERNACIONAL PRODUBANCO BOLIVARIANO RUMINAHUI">BANCO INTERNACIONAL PRODUBANCO BOLIVARIANO RUMINAHUI</option>
+                        <option value="BANCO INTERNACIONAL PRODUBANCO BOLIVARIANO RUMINAHUI">BANCO INTERNACIONAL
+                            PRODUBANCO BOLIVARIANO RUMINAHUI</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -274,4 +301,5 @@
     <script src="products.js"></script>
     <script src="script.js"></script>
 </body>
+
 </html>
