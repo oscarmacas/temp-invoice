@@ -1278,3 +1278,30 @@ select {
 #help-modal .modal-content {
     max-width: 700px;
 }
+
+/* Success Modal Styles */
+#success-modal .modal-content {
+    width: 400px;
+    max-width: 95%;
+    text-align: center;
+}
+
+#success-modal h2 {
+    color: #4caf50;
+    margin-bottom: 20px;
+    font-size: 1.3em;
+}
+
+.success-modal-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 25px;
+}
+
+.success-modal-buttons .button {
+    flex: 1;
+    max-width: 150px;
+    padding: 12px 20px;
+    font-size: 0.95em;
+}

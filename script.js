@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const cashPaymentModal = document.getElementById('cash-payment-modal');
     const creditCardPaymentModal = document.getElementById('credit-card-payment-modal');
     const combinedPaymentModal = document.getElementById('combined-payment-modal');
+    const successModal = document.getElementById('success-modal');
 
     const cashReceivedInput = document.getElementById('cash-received');
     const cashChangeSpan = document.getElementById('cash-change');
@@ -36,6 +37,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const combinedPaymentInputs = document.getElementById('combined-payment-inputs');
     const combinedEnteredAmountSpan = document.getElementById('combined-entered-amount');
     const combinedDifferenceSpan = document.getElementById('combined-difference');
+    const successNuevoButton = document.getElementById('success-nuevo-button');
+    const successImprimirButton = document.getElementById('success-imprimir-button');
 
     let messageTimeout;
 
@@ -59,6 +62,38 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         });
+    });
+
+    // --- Document Validation ---
+    customerIdInput.addEventListener('blur', () => {
+        const value = customerIdInput.value.trim();
+        if (!value) {
+            // Clear styling if empty
+            customerIdInput.style.borderColor = '';
+            customerIdInput.style.backgroundColor = '';
+            return;
+        }
+        
+        const validation = validateDocument(value);
+        
+        if (!validation.valid) {
+            // Red for invalid
+            customerIdInput.style.borderColor = '#f44336';
+            customerIdInput.style.backgroundColor = '#ffebee';
+            showMessage(validation.error || 'Documento inválido', 'error');
+        } else {
+            // Green for valid
+            customerIdInput.style.borderColor = '#4caf50';
+            customerIdInput.style.backgroundColor = '#f1f8f6';
+            const docType = validation.type.toUpperCase();
+            showMessage(`${docType} válido`, 'success');
+        }
+    });
+
+    // Clear validation styling on focus
+    customerIdInput.addEventListener('focus', () => {
+        customerIdInput.style.borderColor = '';
+        customerIdInput.style.backgroundColor = '';
     });
 
     // --- Email Autocomplete ---
@@ -171,29 +206,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function showSuccessAnimation() {
-        const overlay = document.getElementById('success-overlay');
-        const animationContainer = document.getElementById('success-animation');
-
-        // Show overlay
-        overlay.classList.add('show');
-
-        // Load and play Lottie animation
-        const animation = lottie.loadAnimation({
-            container: animationContainer,
-            renderer: 'svg',
-            loop: false,
-            autoplay: true,
-            animationData: successAnimationData
-        });
-
-        // When animation completes, hide overlay and clear form
-        animation.addEventListener('complete', () => {
-            setTimeout(() => {
-                overlay.classList.remove('show');
-                animation.destroy();
-                clearForm();
-            }, 500);
-        });
+        clearForm();
+        const successModal = document.getElementById('success-modal');
+        successModal.style.display = 'flex';
     }
 
     function findProduct(code) {
@@ -830,6 +845,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     closeHelpButton.addEventListener('click', () => {
         helpModal.style.display = 'none';
+    });
+
+    // Success Modal Listeners
+    successNuevoButton.addEventListener('click', () => {
+        successModal.style.display = 'none';
+    });
+
+    successImprimirButton.addEventListener('click', () => {
+        // TODO: Implementar funcionalidad de impresión
+        console.log('Imprimir: Funcionalidad por implementar');
     });
 
     // Keyboard shortcuts

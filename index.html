@@ -11,9 +11,20 @@
 <body style="height:100vh;min-height:100vh;">
     <div id="message-box" class="message-box"></div>
 
-    <!-- Success Animation Overlay -->
-    <div id="success-overlay" class="success-overlay">
-        <div id="success-animation" class="success-animation-container"></div>
+    <!-- Success Modal -->
+    <div id="success-modal" class="modal">
+        <div class="modal-content">
+            <h2>El comprobante fue registrado con éxito</h2>
+            <div style="text-align: center; margin: 20px 0;">
+                <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#4caf50" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+            </div>
+            <div class="success-modal-buttons">
+                <button id="success-nuevo-button" class="button primary">Nuevo</button>
+                <button id="success-imprimir-button" class="button" disabled style="background-color: #ccc; color: #666; cursor: not-allowed;">Imprimir</button>
+            </div>
+        </div>
     </div>
 
     <div class="main-wrapper"
@@ -296,8 +307,7 @@
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
-    <script src="success-animation-data.js"></script>
+    <script src="validators.js"></script>
     <script src="products.js"></script>
     <script src="script.js"></script>
 </body>
