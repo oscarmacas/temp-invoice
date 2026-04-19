@@ -315,10 +315,47 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Print receipt function
     function printReceipt(invoiceData) {
-        const timestamp = new Date().getTime();
-        const filename = `invoice_${timestamp}.json`;
+        const date = new Date(invoiceData.saveTimestamp || Date.now());
+        const meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+        const dia = String(date.getDate()).padStart(2, '0');
+        const mes = meses[date.getMonth()];
+        const anio = date.getFullYear();
+        const hora = String(date.getHours()).padStart(2, '0');
+        const minuto = String(date.getMinutes()).padStart(2, '0');
+        const segundo = String(date.getSeconds()).padStart(2, '0');
+        const filename = `factura_${dia}_${mes}_${anio}_${hora}${minuto}${segundo}.csv`;
 
-        const blob = new Blob([JSON.stringify(invoiceData, null, 2)], { type: 'application/json' });
+        let csvContent = "Tipo,Valor\r\n";
+        csvContent += `CI/RUC,"${invoiceData.customer.id}"\r\n`;
+        csvContent += `Nombre Cliente,"${invoiceData.customer.name}"\r\n`;
+        csvContent += `Dirección Cliente,"${invoiceData.customer.address}"\r\n`;
+        csvContent += `Correo Cliente,"${invoiceData.customer.email}"\r\n`;
+        csvContent += `Forma de Pago,"${invoiceData.paymentMethod}"\r\n`;
+        
+        if (invoiceData.paymentMethod === 'Tarjeta') {
+            csvContent += `Banco,"${invoiceData.bank || ''}"\r\n`;
+            csvContent += `Número de Lote,"${invoiceData.loteNumber || ''}"\r\n`;
+        } else if (invoiceData.paymentMethod === 'Combinado' && invoiceData.combinedPayments) {
+            Object.entries(invoiceData.combinedPayments).forEach(([method, amount]) => {
+                csvContent += `Monto ${method},${parseFloat(amount).toFixed(2)}\r\n`;
+            });
+        }
+        
+        csvContent += `Estado,"${invoiceData.status}"\r\n`;
+        csvContent += `Fecha de Guardado,"${date.toLocaleString()}"\r\n`;
+        csvContent += "\r\n";
+        
+        csvContent += "Código,Nombre,Cantidad,Precio,Descuento (%),Total\r\n";
+        if (invoiceData.items && Array.isArray(invoiceData.items)) {
+            invoiceData.items.forEach(item => {
+                csvContent += `${item.code},"${item.name}",${item.quantity},${parseFloat(item.price).toFixed(2)},${parseFloat(item.discount).toFixed(2)},${parseFloat(item.total).toFixed(2)}\r\n`;
+            });
+        }
+        
+        csvContent += "\r\n";
+        csvContent += `Total Factura,,,,,,${parseFloat(invoiceData.invoiceTotal).toFixed(2)}\r\n`;
+
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
@@ -332,7 +369,7 @@ document.addEventListener('DOMContentLoaded', () => {
             URL.revokeObjectURL(url);
         }, 100);
 
-        console.log('Invoice JSON saved for printing:', filename);
+        console.log('Invoice CSV saved for printing:', filename);
     }
 
     // Invoice actions

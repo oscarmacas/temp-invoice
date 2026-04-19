@@ -287,8 +287,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function generateFilename() {
         const now = new Date();
-        const timestamp = `${now.getFullYear()}_${String(now.getMonth() + 1).padStart(2, '0')}_${String(now.getDate()).padStart(2, '0')}_${String(now.getHours()).padStart(2, '0')}_${String(now.getMinutes()).padStart(2, '0')}_${String(now.getSeconds()).padStart(2, '0')}`;
-        return `invoice_${timestamp}.csv`;
+        const meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+        const dia = String(now.getDate()).padStart(2, '0');
+        const mes = meses[now.getMonth()];
+        const anio = now.getFullYear();
+        const hora = String(now.getHours()).padStart(2, '0');
+        const minuto = String(now.getMinutes()).padStart(2, '0');
+        const segundo = String(now.getSeconds()).padStart(2, '0');
+        return `factura_${dia}_${mes}_${anio}_${hora}${minuto}${segundo}.csv`;
     }
 
     function downloadCSV(csvContent, filename) {
@@ -447,8 +453,7 @@ document.addEventListener('DOMContentLoaded', () => {
         csvContent += `Invoice Total,,,,,,${invoiceTotal.toFixed(2)}\r\n`;
 
         // Trigger Download
-        const filename = generateFilename();
-        downloadCSV(csvContent, filename);
+        // downloadCSV(csvContent, filename);
 
         // Print receipt to thermal printer
         printReceipt(invoiceData);
@@ -459,11 +464,47 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Print Receipt Function ---
     function printReceipt(invoiceData) {
-        const timestamp = new Date().getTime();
-        const filename = `invoice_${timestamp}.json`;
+        const date = new Date(invoiceData.saveTimestamp || Date.now());
+        const meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+        const dia = String(date.getDate()).padStart(2, '0');
+        const mes = meses[date.getMonth()];
+        const anio = date.getFullYear();
+        const hora = String(date.getHours()).padStart(2, '0');
+        const minuto = String(date.getMinutes()).padStart(2, '0');
+        const segundo = String(date.getSeconds()).padStart(2, '0');
+        const filename = `factura_${dia}_${mes}_${anio}_${hora}${minuto}${segundo}.csv`;
 
-        // Create blob with invoice data
-        const blob = new Blob([JSON.stringify(invoiceData, null, 2)], { type: 'application/json' });
+        let csvContent = "Tipo,Valor\r\n";
+        csvContent += `CI/RUC,"${invoiceData.customer.id}"\r\n`;
+        csvContent += `Nombre Cliente,"${invoiceData.customer.name}"\r\n`;
+        csvContent += `Dirección Cliente,"${invoiceData.customer.address}"\r\n`;
+        csvContent += `Correo Cliente,"${invoiceData.customer.email}"\r\n`;
+        csvContent += `Forma de Pago,"${invoiceData.paymentMethod}"\r\n`;
+        
+        if (invoiceData.paymentMethod === 'Tarjeta') {
+            csvContent += `Banco,"${invoiceData.bank || ''}"\r\n`;
+            csvContent += `Número de Lote,"${invoiceData.loteNumber || ''}"\r\n`;
+        } else if (invoiceData.paymentMethod === 'Combinado' && invoiceData.combinedPayments) {
+            Object.entries(invoiceData.combinedPayments).forEach(([method, amount]) => {
+                csvContent += `Monto ${method},${parseFloat(amount).toFixed(2)}\r\n`;
+            });
+        }
+        
+        csvContent += `Estado,"${invoiceData.status}"\r\n`;
+        csvContent += `Fecha de Guardado,"${date.toLocaleString()}"\r\n`;
+        csvContent += "\r\n";
+        
+        csvContent += "Código,Nombre,Cantidad,Precio,Descuento (%),Total\r\n";
+        if (invoiceData.items && Array.isArray(invoiceData.items)) {
+            invoiceData.items.forEach(item => {
+                csvContent += `${item.code},"${item.name}",${item.quantity},${parseFloat(item.price).toFixed(2)},${parseFloat(item.discount).toFixed(2)},${parseFloat(item.total).toFixed(2)}\r\n`;
+            });
+        }
+        
+        csvContent += "\r\n";
+        csvContent += `Total Factura,,,,,,${parseFloat(invoiceData.invoiceTotal).toFixed(2)}\r\n`;
+
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
@@ -472,13 +513,12 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.appendChild(a);
         a.click();
 
-        // Clean up
         setTimeout(() => {
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
         }, 100);
 
-        console.log('Invoice JSON saved for printing:', filename);
+        console.log('Invoice CSV saved for printing:', filename);
     }
 
     saveInvoiceButton.addEventListener('click', () => {
