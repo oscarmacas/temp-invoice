@@ -230,7 +230,7 @@ select {
 }
 
 #invoice-table td {
-    padding: 8px;
+    padding: 25px 8px; /* Increased padding top/bottom to double empty height while keeping growth */
     text-align: left;
     border-bottom: 1px solid #ddd;
     font-size: 14px;
